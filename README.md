@@ -1,1 +1,0 @@
-# ecom-rd-demo
