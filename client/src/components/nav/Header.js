@@ -9,7 +9,7 @@ import {
 import { Link } from 'react-router-dom';
 
 const Header = () => {
-	const [current, setCurrent] = useState('/home');
+	const [current, setCurrent] = useState('home');
 
 	const { SubMenu, Item } = Menu;
 
