@@ -39,7 +39,9 @@ const Register = () => {
 				type='email'
 				onChange={(e) => setEmail(e.target.value)}
 				autoFocus
+        placeholder='Your Email'
 			/>
+      <br/>
 			<button type='submit' className='btn btn-raised'>
 				Register
 			</button>
