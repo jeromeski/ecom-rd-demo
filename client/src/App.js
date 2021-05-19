@@ -21,16 +21,16 @@ const App = () => {
     // onAuthStateChanged is an observer that gives us user
 		const unsubscribe = auth.onAuthStateChanged( async (user) => {
 			if (user) {
-        // json webtoken
+				// json webtoken
 				const idTokenResult = await user.getIdTokenResult();
-				console.log('user -->',  user);
-        dispatch({
-          type: 'LOGGED_IN_USER',
-          payload: {
-            email: user.email,
-            token: idTokenResult
-          }
-        })
+				// console.log('user -->',  user);
+				dispatch({
+					type: 'LOGGED_IN_USER',
+					payload: {
+						email: user.email,
+						token: idTokenResult
+					}
+				});
 			}
 		});
 		// Cleanup
