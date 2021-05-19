@@ -18,8 +18,8 @@ const App = () => {
   const dispatch = useDispatch();
 
 	useEffect(() => {
-    // onAuthStateChanged is an observer that gives us user
-		const unsubscribe = auth.onAuthStateChanged( async (user) => {
+		// onAuthStateChanged is an observer that gives us user
+		const unsubscribe = auth.onAuthStateChanged(async (user) => {
 			if (user) {
 				// json webtoken
 				const idTokenResult = await user.getIdTokenResult();
@@ -35,6 +35,7 @@ const App = () => {
 		});
 		// Cleanup
 		return () => unsubscribe();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	return (
