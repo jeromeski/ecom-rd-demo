@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Switch, Route } from 'react-router-dom';
+import {useDispatch} from 'react-redux';
 
-import Home from './pages/Home'
+import Home from './pages/Home';
 import Login from './pages/auth/Login';
 import Register from './pages/auth/Register';
 import Header from './components/nav/Header';
@@ -10,8 +11,32 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import RegisterComplete from './pages/auth/RegisterComplete';
 
+import { auth } from './firebase';
 
 const App = () => {
+
+  const dispatch = useDispatch();
+
+	useEffect(() => {
+    // onAuthStateChanged is an observer that gives us user
+		const unsubscribe = auth.onAuthStateChanged( async (user) => {
+			if (user) {
+        // json webtoken
+				const idTokenResult = await user.getIdTokenResult();
+				console.log('user -->',  user);
+        dispatch({
+          type: 'LOGGED_IN_USER',
+          payload: {
+            email: user.email,
+            token: idTokenResult
+          }
+        })
+			}
+		});
+		// Cleanup
+		return () => unsubscribe();
+	}, []);
+
 	return (
 		<React.Fragment>
 			<Header />
