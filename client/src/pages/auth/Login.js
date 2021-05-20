@@ -1,18 +1,23 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { auth, googleAuthProvider } from '../../firebase';
 import { toast } from 'react-toastify';
 import { Button, Space, Spin } from 'antd';
 import { GoogleOutlined, MailOutlined } from '@ant-design/icons';
 
-
-const Login = ({history}) => {
+const Login = ({ history }) => {
 	const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false);
+	const [password, setPassword] = useState('');
+	const [loading, setLoading] = useState(false);
 
 	const dispatch = useDispatch();
+
+	const { user } = useSelector((state) => ({ ...state }));
+
+	useEffect(() => {
+		if (user && user.token) history.push('/');
+	}, [user]);
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
@@ -38,7 +43,7 @@ const Login = ({history}) => {
 		}
 	};
 
-  const googleLogin = async () => {
+	const googleLogin = async () => {
 		auth
 			.signInWithPopup(googleAuthProvider)
 			.then(async (result) => {

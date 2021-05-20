@@ -1,19 +1,27 @@
 import React, { useState } from 'react';
 import { auth } from '../../firebase';
 import { toast } from 'react-toastify';
+import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
 
 
-const Register = () => {
+const Register = ({ history }) => {
 	const [email, setEmail] = useState('');
+
+	const { user } = useSelector((state) => ({ ...state }));
+
+	useEffect(() => {
+		if (user && user.token) history.push('/');
+	}, [user]);
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-    const config = {
+		const config = {
 			url: process.env.REACT_APP_REGISTER_REDIRECT_URL,
 			handleCodeInApp: true
 		};
 
-    await auth
+		await auth
 			.sendSignInLinkToEmail(email, config)
 			.then(() => {
 				console.log('Email Sent');
@@ -27,11 +35,11 @@ const Register = () => {
 				console.log(errorCode, '\n', errorMessage);
 				toast.error('Error sending link. Try again later');
 			});
-      // Clear email field
-      setEmail('')
+		// Clear email field
+		setEmail('');
 	};
 
-  const registerForm = () => (
+	const registerForm = () => (
 		<form onSubmit={handleSubmit}>
 			<input
 				className='form-control'
@@ -39,9 +47,9 @@ const Register = () => {
 				type='email'
 				onChange={(e) => setEmail(e.target.value)}
 				autoFocus
-        placeholder='Your Email'
+				placeholder='Your Email'
 			/>
-      <br/>
+			<br />
 			<button type='submit' className='btn btn-raised'>
 				Register
 			</button>

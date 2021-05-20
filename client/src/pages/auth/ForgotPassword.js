@@ -2,10 +2,17 @@ import React, { useState } from 'react';
 import { auth } from '../../firebase';
 import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
 
 const ForgotPassword = ({ history }) => {
 	const [email, setEmail] = useState('');
 	const [loading, setLoading] = useState('');
+
+  const { user } = useSelector((state) => ({ ...state }));
+
+	useEffect(() => {
+		if (user && user.token) history.push('/');
+	}, [user]);
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
@@ -21,6 +28,7 @@ const ForgotPassword = ({ history }) => {
 			.then(() => {
 				setEmail('');
 				toast.success('Check your email for Password reset link');
+        setLoading(false);
 			})
 			.catch((error) => {
 				console.log(error);
