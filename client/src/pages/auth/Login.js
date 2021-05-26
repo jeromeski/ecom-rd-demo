@@ -5,6 +5,8 @@ import { auth, googleAuthProvider } from '../../firebase';
 import { toast } from 'react-toastify';
 import { Button, Space, Spin } from 'antd';
 import { GoogleOutlined, MailOutlined } from '@ant-design/icons';
+import { createOrUpdateUser } from '../../functions/auth';
+
 
 const Login = ({ history }) => {
 	const [email, setEmail] = useState('');
@@ -17,7 +19,7 @@ const Login = ({ history }) => {
 
 	useEffect(() => {
 		if (user && user.token) history.push('/');
-	}, [user]);
+	}, [user, history]);
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
@@ -28,13 +30,20 @@ const Login = ({ history }) => {
 			const { user } = result;
 			const idTokenResult = await user.getIdTokenResult();
 
-			dispatch({
-				type: 'LOGGED_IN_USER',
-				payload: {
-					email: user.email,
-					token: idTokenResult.token
-				}
-			});
+			createOrUpdateUser(idTokenResult.token)
+				.then((res) => {
+					dispatch({
+						type: 'LOGGED_IN_USER',
+						payload: {
+							name: res.data.name,
+							email: res.data.email,
+							token: idTokenResult.token,
+							role: res.data.role,
+							_id: res.data._id
+						}
+					});
+				})
+				.catch((err) => console.log(err.message));
 			history.push('/');
 		} catch (error) {
 			console.log(error.message);
@@ -50,13 +59,20 @@ const Login = ({ history }) => {
 				const { user } = result;
 				const idTokenResult = await user.getIdTokenResult();
 				// req to backend
-				dispatch({
-					type: 'LOGGED_IN_USER',
-					payload: {
-						email: user.email,
-						token: idTokenResult.token
-					}
-				});
+				createOrUpdateUser(idTokenResult.token)
+					.then((res) => {
+						dispatch({
+							type: 'LOGGED_IN_USER',
+							payload: {
+								name: res.data.name,
+								email: res.data.email,
+								token: idTokenResult.token,
+								role: res.data.role,
+								_id: res.data._id
+							}
+						});
+					})
+					.catch((err) => console.log(err.message));
 				history.push('/');
 			})
 			.catch((error) => {
