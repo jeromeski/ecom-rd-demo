@@ -12,6 +12,7 @@ const ForgotPassword = ({ history }) => {
 
 	useEffect(() => {
 		if (user && user.token) history.push('/');
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [user]);
 
 	const handleSubmit = async (e) => {
