@@ -54,9 +54,20 @@ const Header = () => {
 			)}
 
 			{user && (
-				<SubMenu icon={<SettingOutlined />} title={`Hi ${user.email && user.email.split('@')[0]}!`} className='float-right'>
-					<Item key='option 1'>Option 1</Item>
-					<Item key='option 2'>Option 2</Item>
+				<SubMenu
+					icon={<SettingOutlined />}
+					title={`Hi ${user.email && user.email.split('@')[0]}!`}
+					className='float-right'>
+					{user && user.role === 'subscriber' && (
+						<Item>
+							<Link to='/user/history'>Dashboard</Link>
+						</Item>
+					)}
+					{user && user.role === 'admin' && (
+						<Item>
+							<Link to='/admin/dashboard'>Dashboard</Link>
+						</Item>
+					)}
 					<Item icon={<LogoutOutlined />} onClick={logout}>
 						Logout
 					</Item>
