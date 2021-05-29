@@ -8,8 +8,8 @@ export const getCategory = async (slug) => {
 	return await axios.get(`${process.env.REACT_APP_API}/category/${slug}`);
 };
 
-export const createCategory = async (slug, category, authtoken) => {
-	return await axios.post(`${process.env.REACT_APP_API}/category/${slug}`, category, {
+export const createCategory = async (category, authtoken) => {
+	return await axios.post(`${process.env.REACT_APP_API}/category`, category, {
 		headers: {
 			authtoken
 		}
@@ -24,7 +24,7 @@ export const updateCategory = async (slug, category, authtoken) => {
 	});
 };
 
-export const deleteCategory = async (slug, category, authtoken) => {
+export const removeCategory = async (slug, category, authtoken) => {
 	return await axios.delete(`${process.env.REACT_APP_API}/category/${slug}`, category, {
 		headers: {
 			authtoken
