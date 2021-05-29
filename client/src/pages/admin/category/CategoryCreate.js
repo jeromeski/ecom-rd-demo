@@ -1,8 +1,10 @@
+import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import AdminNav from '../../../components/nav/AdminNav';
-import { createCategory, getCategories } from '../../../functions/category';
+import { createCategory, getCategories, removeCategory } from '../../../functions/category';
 
 const CategoryCreate = () => {
 	const [name, setName] = useState('');
@@ -28,11 +30,28 @@ const CategoryCreate = () => {
 			});
 	};
 
+  const handleRemove = (slug) => {
+    
+    if(window.confirm('Delete?')) {
+      setLoading(true);
+      removeCategory(slug, user.token)
+        .then((res) => {
+          setLoading(false);
+					toast.error(`${res.data.name} deleted`);
+					loadCategories();
+        })
+        .catch((err) => {
+          setLoading(false);
+          toast.error(err.response.data)
+        })
+    }
+  }
+
 	useEffect(() => {
 		loadCategories();
 	}, []);
 
-	const loadCategories = (c) => getCategories().then((res) => setCategories(res.data));
+	const loadCategories = () => getCategories().then((res) => setCategories(res.data));
 
 	const categoryForm = () => (
 		<form onSubmit={handleSubmit}>
@@ -60,17 +79,20 @@ const CategoryCreate = () => {
 				<div className='col'>
 					{loading ? <h4>Loading...</h4> : <h4>Create Category</h4>}
 					{categoryForm()}
-					<div className='container'>
-						<div className='row'>
-							<div className='col'>
-								{categories.map((c) => (
-									<div key={c._id}>
-										<button>{c.name}</button>
-									</div>
-								))}
-							</div>
+					<br />
+					{categories.map((c) => (
+						<div className='alert alert-secondary' key={c._id}>
+							{c.name}
+							<span onClick={() => handleRemove(c.slug)} className='btn btn-sm float-right'>
+								<DeleteOutlined className='text-danger' />
+							</span>
+							<Link to={`/admin/category/${c.slug}`}>
+								<span className='btn btn-sm float-right'>
+									<EditOutlined className='text-warning' />
+								</span>
+							</Link>
 						</div>
-					</div>
+					))}
 				</div>
 			</div>
 		</div>

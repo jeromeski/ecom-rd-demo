@@ -24,8 +24,8 @@ export const updateCategory = async (slug, category, authtoken) => {
 	});
 };
 
-export const removeCategory = async (slug, category, authtoken) => {
-	return await axios.delete(`${process.env.REACT_APP_API}/category/${slug}`, category, {
+export const removeCategory = async (slug, authtoken) => {
+	return await axios.delete(`${process.env.REACT_APP_API}/category/${slug}`, {
 		headers: {
 			authtoken
 		}
