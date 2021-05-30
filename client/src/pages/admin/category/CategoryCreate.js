@@ -5,11 +5,16 @@ import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import AdminNav from '../../../components/nav/AdminNav';
 import { createCategory, getCategories, removeCategory } from '../../../functions/category';
+import LocalSearch from '../../../components/forms/LocalSearch';
+import CategoryForm from '../../../components/forms/CategoryForm';
+
+
 
 const CategoryCreate = () => {
 	const [name, setName] = useState('');
 	const [loading, setLoading] = useState(false);
 	const [categories, setCategories] = useState([]);
+  const [keyword, setKeyword] = useState('');
 
 	const { user } = useSelector((state) => ({ ...state }));
 
@@ -53,22 +58,7 @@ const CategoryCreate = () => {
 
 	const loadCategories = () => getCategories().then((res) => setCategories(res.data));
 
-	const categoryForm = () => (
-		<form onSubmit={handleSubmit}>
-			<div className='form-group'>
-				<label>Name</label>
-				<input
-					type='text'
-					value={name}
-					placeholder='Enter Category Name'
-					onChange={(e) => setName(e.target.value)}
-					className='form-control'
-				/>
-				<br />
-				<button className='btn btn-outline-primary'>Save</button>
-			</div>
-		</form>
-	);
+  const searched = (keyword) => (c) => c.name.toLowerCase().includes(keyword);
 
 	return (
 		<div className='container-fluid'>
@@ -76,23 +66,32 @@ const CategoryCreate = () => {
 				<div className='col-md-2'>
 					<AdminNav />
 				</div>
-				<div className='col'>
+
+				<div className='col-md-10'>
 					{loading ? <h4>Loading...</h4> : <h4>Create Category</h4>}
-					{categoryForm()}
+					<CategoryForm handleSubmit={handleSubmit} name={name} setName={setName} />
 					<br />
-					{categories.map((c) => (
-						<div className='alert alert-secondary' key={c._id}>
-							{c.name}
-							<span onClick={() => handleRemove(c.slug)} className='btn btn-sm float-right'>
-								<DeleteOutlined className='text-danger' />
-							</span>
-							<Link to={`/admin/category/${c.slug}`}>
-								<span className='btn btn-sm float-right'>
-									<EditOutlined className='text-warning' />
+					<LocalSearch keyword={keyword} setKeyword={setKeyword} />
+					{categories
+						// filter cb
+						// create a filtered array only with the matched keyword
+						// .filter(searched(keyword))
+            // closure
+						.filter((keyword) => searched(keyword))
+
+						.map((c) => (
+							<div className='alert alert-secondary' key={c._id}>
+								{c.name}
+								<span onClick={() => handleRemove(c.slug)} className='btn btn-sm float-right'>
+									<DeleteOutlined className='text-danger' />
 								</span>
-							</Link>
-						</div>
-					))}
+								<Link to={`/admin/category/${c.slug}`}>
+									<span className='btn btn-sm float-right'>
+										<EditOutlined className='text-warning' />
+									</span>
+								</Link>
+							</div>
+						))}
 				</div>
 			</div>
 		</div>
