@@ -3,7 +3,7 @@ const Sub = require('../models/sub');
 const slugify = require('slugify');
 
 exports.create = async (req, res) => {
-	const { name } = req.body;
+	const { name, parent } = req.body;
 	// const duplicate = await Sub.findOne({ name });
 	// console.log(duplicate);
 	// if (name === duplicate.name) {
@@ -13,6 +13,7 @@ exports.create = async (req, res) => {
 		res.json(
 			await new Sub({
 				name,
+				parent,
 				slug: slugify(name)
 			}).save()
 		);
@@ -32,8 +33,8 @@ exports.update = async (req, res) => {
 		let updated = await Sub.findOneAndUpdate(
 			// filter and retrieve doc using old slug
 			{ slug: req.params.slug },
-			// new name and generate new slug
-			{ name, slug: slugify(name) },
+			// update name and parent, and generate new slug
+			{ name, parent, slug: slugify(name) },
 			{ new: true }
 		).exec();
 		res.json(updated);
