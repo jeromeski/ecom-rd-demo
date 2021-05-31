@@ -1,38 +1,38 @@
-//Create a Category model just by requiring the module
-const Category = require('../models/category');
+//Create a Sub model just by requiring the module
+const Sub = require('../models/sub');
 const slugify = require('slugify');
 
 exports.create = async (req, res) => {
 	const { name } = req.body;
-	// const duplicate = await Category.findOne({ name });
+	// const duplicate = await Sub.findOne({ name });
 	// console.log(duplicate);
 	// if (name === duplicate.name) {
 	// 	console.log('found dupe', true);
 	// }
 	try {
 		res.json(
-			await new Category({
+			await new Sub({
 				name,
 				slug: slugify(name)
 			}).save()
 		);
 	} catch {
-		res.status(400).send('Create category failed');
+		res.status(400).send('Create sub failed');
 	}
 };
 
 exports.read = async (req, res) => {
-	let category = await Category.findOne({ slug: req.params.slug }).exec();
-	res.json(category);
+	let sub = await Sub.findOne({ slug: req.params.slug }).exec();
+	res.json(sub);
 };
 
 exports.update = async (req, res) => {
 	const { name } = req.body;
 	try {
-		let updated = await Category.findOneAndUpdate(
-      // filter and retrieve doc using old slug
+		let updated = await Sub.findOneAndUpdate(
+			// filter and retrieve doc using old slug
 			{ slug: req.params.slug },
-      // new name and generate new slug
+			// new name and generate new slug
 			{ name, slug: slugify(name) },
 			{ new: true }
 		).exec();
@@ -44,7 +44,7 @@ exports.update = async (req, res) => {
 
 exports.remove = async (req, res) => {
 	try {
-		const deleted = await Category.findOneAndDelete({ slug: req.params.slug }).exec();
+		const deleted = await Sub.findOneAndDelete({ slug: req.params.slug }).exec();
 		// console.log(deleted);
 		res.json(deleted);
 	} catch (err) {
@@ -53,5 +53,5 @@ exports.remove = async (req, res) => {
 };
 
 exports.list = async (req, res) => {
-	res.json(await Category.find({}).sort({ createdAt: -1 }).exec());
+	res.json(await Sub.find({}).sort({ createdAt: -1 }).exec());
 };
