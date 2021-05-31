@@ -1,11 +1,13 @@
+import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import CategoryForm from '../../../components/forms/CategoryForm';
 import LocalSearch from '../../../components/forms/LocalSearch';
 import AdminNav from '../../../components/nav/AdminNav';
 import { getCategories } from '../../../functions/category';
-import { createSub, removeSub } from '../../../functions/sub';
+import { createSub, getSubs, removeSub } from '../../../functions/sub';
 
 const SubCreate = ({ history, match }) => {
 	const { user } = useSelector((state) => ({ ...state }));
@@ -15,14 +17,18 @@ const SubCreate = ({ history, match }) => {
 	const [loading, setLoading] = useState('');
 	const [category, setCategory] = useState('');
 	const [categories, setCategories] = useState([]);
+	const [subs, setSubs] = useState([]);
 
 	const loadCategories = () =>
 		getCategories().then((res) => {
 			setCategories(res.data);
 		});
 
+	const loadSubs = () => getSubs().then((s) => setSubs(s.data));
+
 	useEffect(() => {
 		loadCategories();
+		loadSubs();
 	}, []);
 
 	const handleSubmit = (e) => {
@@ -32,8 +38,9 @@ const SubCreate = ({ history, match }) => {
 		createSub({ name, parent: category }, user.token)
 			.then((res) => {
 				setLoading(false);
-				setCategory('');
+				setName('');
 				toast.success(`${res.data.name} is created`);
+				loadSubs();
 			})
 			.catch((err) => {
 				setLoading(false);
@@ -47,7 +54,8 @@ const SubCreate = ({ history, match }) => {
 			await removeSub(slug, user.token)
 				.then((res) => {
 					setLoading(false);
-					toast.success(`${res.data} is removed`);
+					toast.success(`${res.data.name} is removed`);
+          loadSubs();
 				})
 				.catch((err) => {
 					if (err.response.status === 400) {
@@ -57,6 +65,9 @@ const SubCreate = ({ history, match }) => {
 				});
 		}
 	};
+
+	const searched = (keyword) => (s) => s.name.includes(keyword);
+	//  const searched = (keyword) => (c) => c.name.toLowerCase().includes(keyword);
 
 	return (
 		<div className='container-fluid'>
@@ -84,34 +95,29 @@ const SubCreate = ({ history, match }) => {
 						</select>
 					</div>
 
-					{JSON.stringify(category)}
-
 					<CategoryForm handleSubmit={handleSubmit} name={name} setName={setName} />
 
 					{/* step 2 and step 3 */}
 					<LocalSearch keyword={keyword} setKeyword={setKeyword} />
 
 					{/* step 5 */}
-					{/* {categories.filter(searched(keyword)).map((c) => (
-            <div className="alert alert-secondary" key={c._id}>
-              {c.name}
-              <span
-                onClick={() => handleRemove(c.slug)}
-                className="btn btn-sm float-right"
-              >
-                <DeleteOutlined className="text-danger" />
-              </span>
-              <Link to={`/admin/category/${c.slug}`}>
-                <span className="btn btn-sm float-right">
-                  <EditOutlined className="text-warning" />
-                </span>
-              </Link>
-            </div>
-          ))} */}
+					{subs.filter(searched(keyword)).map((s) => (
+						<div className='alert alert-secondary' key={s._id}>
+							{s.name}
+							<span onClick={() => handleRemove(s.slug)} className='btn btn-sm float-right'>
+								<DeleteOutlined className='text-danger' />
+							</span>
+							<Link to={`/admin/sub/${s.slug}`}>
+								<span className='btn btn-sm float-right'>
+									<EditOutlined className='text-warning' />
+								</span>
+							</Link>
+						</div>
+					))}
 				</div>
 			</div>
 		</div>
 	);
-};
+};;
 
 export default SubCreate;
