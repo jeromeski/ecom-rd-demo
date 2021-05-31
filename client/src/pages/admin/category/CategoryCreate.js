@@ -75,9 +75,8 @@ const CategoryCreate = () => {
 					{categories
 						// filter cb
 						// create a filtered array only with the matched keyword
-						// .filter(searched(keyword))
             // closure
-						.filter((keyword) => searched(keyword))
+						.filter(searched(keyword))
 
 						.map((c) => (
 							<div className='alert alert-secondary' key={c._id}>
