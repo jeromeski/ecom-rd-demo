@@ -9,6 +9,8 @@ exports.create = async (req, res) => {
 	// if (name === duplicate.name) {
 	// 	console.log('found dupe', true);
 	// }
+
+  console.log(name, parent);
 	try {
 		res.json(
 			await new Sub({
@@ -28,7 +30,7 @@ exports.read = async (req, res) => {
 };
 
 exports.update = async (req, res) => {
-	const { name } = req.body;
+	const { name, parent } = req.body;
 	try {
 		let updated = await Sub.findOneAndUpdate(
 			// filter and retrieve doc using old slug
@@ -36,10 +38,10 @@ exports.update = async (req, res) => {
 			// update name and parent, and generate new slug
 			{ name, parent, slug: slugify(name) },
 			{ new: true }
-		).exec();
+		);
 		res.json(updated);
 	} catch (err) {
-		res.json(err.message);
+		res.status(400).send('Create subcategory failed');
 	}
 };
 
