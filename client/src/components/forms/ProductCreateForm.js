@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 const ProductCreateForm = ({ handleChange, handleSubmit, values }) => {
 	const {
@@ -16,6 +16,8 @@ const ProductCreateForm = ({ handleChange, handleSubmit, values }) => {
 		color,
 		brand
 	} = values;
+
+  
 
 	return (
 		<form onSubmit={handleSubmit}>
@@ -91,6 +93,18 @@ const ProductCreateForm = ({ handleChange, handleSubmit, values }) => {
 					{brands.map((b) => (
 						<option key={b} value={b}>
 							{b}
+						</option>
+					))}
+				</select>
+			</div>
+
+			<div className='form-group'>
+				<label>Category</label>
+				<select name='category' className='form-control' onChange={handleChange}>
+					<option>Please select</option>
+					{categories.length > 0 && categories.map((c) => (
+						<option key={c._id} value={c._id}>
+							{c.name}
 						</option>
 					))}
 				</select>

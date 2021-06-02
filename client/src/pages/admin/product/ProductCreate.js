@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import AdminNav from '../../../components/nav/AdminNav';
 import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
 import { createProduct } from '../../../functions/product';
 import ProductCreateForm from '../../../components/forms/ProductCreateForm';
+import { getCategories } from '../../../functions/category';
 
 const initialState = {
 	title: 'Macbook Pro',
@@ -22,11 +23,16 @@ const initialState = {
 };
 
 const ProductCreate = () => {
-  const [values, setValues] = useState(initialState);
+	const [values, setValues] = useState(initialState);
 	// const [loading, setLoading] = useState(false);
 	const { user } = useSelector((state) => ({ ...state }));
 
-	
+	useEffect(() => {
+		loadCategories();
+	}, []);
+
+	const loadCategories = () =>
+		getCategories().then((c) => setValues({ ...values, categories: c.data }));
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
@@ -51,7 +57,6 @@ const ProductCreate = () => {
 		setValues({ ...values, [e.target.name]: e.target.value });
 	};
 
-	
 	return (
 		<div className='container-fluid'>
 			<div className='row'>
@@ -61,7 +66,11 @@ const ProductCreate = () => {
 
 				<div className='col-md-10'>
 					<h4>Product Create</h4>
-          <ProductCreateForm handleChange={handleChange} handleSubmit={handleSubmit} values={values}/>
+					<ProductCreateForm
+						handleChange={handleChange}
+						handleSubmit={handleSubmit}
+						values={values}
+					/>
 				</div>
 			</div>
 		</div>
