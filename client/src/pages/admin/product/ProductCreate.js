@@ -6,6 +6,7 @@ import { createProduct } from '../../../functions/product';
 import ProductCreateForm from '../../../components/forms/ProductCreateForm';
 import { getCategories, getCategorySubs } from '../../../functions/category';
 import { Select } from 'antd';
+import FileUpload from '../../../components/forms/FileUpload';
 
 const { Option } = Select;
 
@@ -82,6 +83,7 @@ const ProductCreate = () => {
 
 				<div className='col-md-10'>
 					<h4>Product Create</h4>
+					<FileUpload />
 					<ProductCreateForm
 						handleChange={handleChange}
 						handleSubmit={handleSubmit}
