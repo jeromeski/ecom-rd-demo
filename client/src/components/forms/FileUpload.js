@@ -1,12 +1,31 @@
 import React from 'react';
+import Resizer from 'react-image-file-resizer';
 
 const FileUpload = () => {
 	const fileUploadAndResize = (e) => {
 		// console.log(e.target.files);
 		// resize
+		let files = e.target.files;
+		if (files) {
+      files.forEach((file) => {
+        Resizer.imageFileResizer(
+          file,
+          720,
+          720,
+          'JPEG',
+          100,
+          0,
+          (uri) => {
+            console.log(uri)
+          },
+          'base64'
+        )
+      })
+    }
+
 		// send back to server to upload to cloudinary
 		// set url to images[] in the parent component state - ProductCreate
-	};
+	};;
 
 	return (
 		<div className='row'>
