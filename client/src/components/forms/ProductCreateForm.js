@@ -1,6 +1,16 @@
+import { Select } from 'antd';
+import { Option } from 'antd/lib/mentions';
 import React, { useEffect, useState } from 'react';
 
-const ProductCreateForm = ({ handleChange, handleSubmit, values }) => {
+const ProductCreateForm = ({
+	handleChange,
+	handleSubmit,
+	values,
+	handleCategoryChange,
+	subOptions,
+	showSub,
+  setValues
+}) => {
 	const {
 		title,
 		description,
@@ -16,8 +26,6 @@ const ProductCreateForm = ({ handleChange, handleSubmit, values }) => {
 		color,
 		brand
 	} = values;
-
-  
 
 	return (
 		<form onSubmit={handleSubmit}>
@@ -100,16 +108,37 @@ const ProductCreateForm = ({ handleChange, handleSubmit, values }) => {
 
 			<div className='form-group'>
 				<label>Category</label>
-				<select name='category' className='form-control' onChange={handleChange}>
+				<select name='category' className='form-control' onChange={handleCategoryChange}>
 					<option>Please select</option>
-					{categories.length > 0 && categories.map((c) => (
-						<option key={c._id} value={c._id}>
-							{c.name}
-						</option>
-					))}
+					{categories.length > 0 &&
+						categories.map((c) => (
+							<option key={c._id} value={c._id}>
+								{c.name}
+							</option>
+						))}
 				</select>
 			</div>
-
+			{showSub && (
+				<div>
+					<label>SubCategory</label>
+					<Select
+						mode='multiple'
+						allowClear
+						style={{ width: '100%' }}
+						placeholder='Please select'
+						value={subs}
+            // value === e.target.value
+						onChange={(value) => setValues({ ...values, subs: value })}>
+						{subOptions.length &&
+							subOptions.map((s) => (
+								<Option key={s._id} value={s._id}>
+									{s.name}
+								</Option>
+							))}
+					</Select>
+				</div>
+			)}
+			<br />
 			<button className='btn btn-outline-info'>Save</button>
 		</form>
 	);
