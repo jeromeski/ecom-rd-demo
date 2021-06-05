@@ -37,48 +37,48 @@ const Header = () => {
   };
 
   return (
-    <Menu onClick={handleClick} selectedKeys={[current]} mode="horizontal">
-      <Item key="home" icon={<AppstoreOutlined />}>
-        <Link to="/">Home</Link>
-      </Item>
+		<Menu onClick={handleClick} selectedKeys={[current]} mode='horizontal'>
+			<Item key='home' icon={<AppstoreOutlined />}>
+				<Link to='/'>Home</Link>
+			</Item>
 
-      {!user && (
-        <Item key="register" icon={<UserAddOutlined />} className="float-right">
-          <Link to="/register">Register</Link>
-        </Item>
-      )}
+			{!user && (
+				<Item key='register' icon={<UserAddOutlined />} className='float-right'>
+					<Link to='/register'>Register</Link>
+				</Item>
+			)}
 
-      {!user && (
-        <Item key="login" icon={<UserOutlined />} className="float-right">
-          <Link to="/login">Login</Link>
-        </Item>
-      )}
+			{!user && (
+				<Item key='login' icon={<UserOutlined />} className='float-right'>
+					<Link to='/login'>Login</Link>
+				</Item>
+			)}
 
-      {user && (
-        <SubMenu
-          icon={<SettingOutlined />}
-          title={user.email && user.email.split("@")[0]}
-          className="float-right"
-        >
-          {user && user.role === "subscriber" && (
-            <Item>
-              <Link to="/user/history">Dashboard</Link>
-            </Item>
-          )}
+			{user && (
+				<SubMenu
+					icon={<SettingOutlined />}
+					title={user.email && user.email.split('@')[0]}
+					className='float-right'
+					key='submenu_01'>
+					{user && user.role === 'subscriber' && (
+						<Item>
+							<Link to='/user/history'>Dashboard</Link>
+						</Item>
+					)}
 
-          {user && user.role === "admin" && (
-            <Item>
-              <Link to="/admin/dashboard">Dashboard</Link>
-            </Item>
-          )}
+					{user && user.role === 'admin' && (
+						<Item>
+							<Link to='/admin/dashboard'>Dashboard</Link>
+						</Item>
+					)}
 
-          <Item icon={<LogoutOutlined />} onClick={logout}>
-            Logout
-          </Item>
-        </SubMenu>
-      )}
-    </Menu>
-  );
+					<Item icon={<LogoutOutlined />} onClick={logout}>
+						Logout
+					</Item>
+				</SubMenu>
+			)}
+		</Menu>
+	);
 };
 
 export default Header;
