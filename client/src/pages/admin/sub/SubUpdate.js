@@ -4,10 +4,10 @@ import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { getCategories } from "../../../functions/category";
 import { updateSub, getSub } from "../../../functions/sub";
-import { Link } from "react-router-dom";
-import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
+// import { Link } from "react-router-dom";
+// import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import CategoryForm from "../../../components/forms/CategoryForm";
-import LocalSearch from "../../../components/forms/LocalSearch";
+// import LocalSearch from "../../../components/forms/LocalSearch";
 
 const SubUpdate = ({ match, history }) => {
   const { user } = useSelector((state) => ({ ...state }));
@@ -18,9 +18,10 @@ const SubUpdate = ({ match, history }) => {
   const [parent, setParent] = useState("");
 
   useEffect(() => {
-    loadCategories();
-    loadSub();
-  }, []);
+		loadCategories();
+		loadSub();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
   const loadCategories = () =>
     getCategories().then((c) => setCategories(c.data));

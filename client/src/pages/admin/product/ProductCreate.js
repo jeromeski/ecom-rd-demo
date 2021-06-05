@@ -5,10 +5,9 @@ import { useSelector } from 'react-redux';
 import { createProduct } from '../../../functions/product';
 import ProductCreateForm from '../../../components/forms/ProductCreateForm';
 import { getCategories, getCategorySubs } from '../../../functions/category';
-import { Select } from 'antd';
 import FileUpload from '../../../components/forms/FileUpload';
 
-const { Option } = Select;
+
 
 const initialState = {
 	title: 'Macbook Pro',
@@ -30,11 +29,13 @@ const ProductCreate = () => {
 	const [values, setValues] = useState(initialState);
   const [subOptions, setSubOptions] = useState([]);
 	const [showSub, setShowSub] = useState(false);
+  const [loading, setLoading] = useState(false);
 
 	const { user } = useSelector((state) => ({ ...state }));
 
 	useEffect(() => {
 		loadCategories();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	const loadCategories = () =>
@@ -83,7 +84,7 @@ const ProductCreate = () => {
 
 				<div className='col-md-10'>
 					<h4>Product Create</h4>
-					<FileUpload />
+					<FileUpload values={values} setValues={setValues} setLoading={setLoading} />
 					<ProductCreateForm
 						handleChange={handleChange}
 						handleSubmit={handleSubmit}

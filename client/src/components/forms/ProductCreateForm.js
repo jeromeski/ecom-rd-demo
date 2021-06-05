@@ -1,6 +1,6 @@
 import { Select } from 'antd';
 import { Option } from 'antd/lib/mentions';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 const ProductCreateForm = ({
 	handleChange,
