@@ -11,19 +11,19 @@ import { LoadingOutlined } from '@ant-design/icons';
 
 
 const initialState = {
-	title: 'Macbook Pro',
-	description: 'This is the best Apple product',
-	price: '45000',
+	title: "Macbook Pro",
+	description: "This is the best Apple product",
+	price: "45000",
 	categories: [],
-	category: '',
+	category: "",
 	subs: [],
-	shipping: 'Yes',
-	quantity: '50',
+	shipping: "Yes",
+	quantity: "50",
 	images: [],
-	colors: ['Black', 'Brown', 'Silver', 'White', 'Blue'],
-	brands: ['Apple', 'Samsung', 'Microsoft', 'Lenovo', 'ASUS'],
-	color: 'White',
-	brand: 'Apple'
+	colors: ["Black", "Brown", "Silver", "White", "Blue"],
+	brands: ["Apple", "Samsung", "Microsoft", "Lenovo", "ASUS", "HP"],
+	color: "White",
+	brand: "Apple"
 };
 
 const ProductCreate = () => {
