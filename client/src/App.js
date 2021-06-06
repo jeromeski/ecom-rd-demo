@@ -24,6 +24,7 @@ import ProductCreate from "./pages/admin/product/ProductCreate";
 import { auth } from "./firebase";
 import { useDispatch } from "react-redux";
 import { currentUser } from "./functions/auth";
+import AllProducts from "./pages/admin/product/AllProducts";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -56,31 +57,28 @@ const App = () => {
   }, [dispatch]);
 
   return (
-    <>
-      <Header />
-      <ToastContainer />
-      <Switch>
-        <Route exact path="/" component={Home} />
-        <Route exact path="/login" component={Login} />
-        <Route exact path="/register" component={Register} />
-        <Route exact path="/register/complete" component={RegisterComplete} />
-        <Route exact path="/forgot/password" component={ForgotPassword} />
-        <UserRoute exact path="/user/history" component={History} />
-        <UserRoute exact path="/user/password" component={Password} />
-        <UserRoute exact path="/user/wishlist" component={Wishlist} />
-        <AdminRoute exact path="/admin/dashboard" component={AdminDashboard} />
-        <AdminRoute exact path="/admin/category" component={CategoryCreate} />
-        <AdminRoute
-          exact
-          path="/admin/category/:slug"
-          component={CategoryUpdate}
-        />
-        <AdminRoute exact path="/admin/sub" component={SubCreate} />
-        <AdminRoute exact path="/admin/sub/:slug" component={SubUpdate} />
-        <AdminRoute exact path="/admin/product" component={ProductCreate} />
-      </Switch>
-    </>
-  );
+		<>
+			<Header />
+			<ToastContainer />
+			<Switch>
+				<Route exact path="/" component={Home} />
+				<Route exact path="/login" component={Login} />
+				<Route exact path="/register" component={Register} />
+				<Route exact path="/register/complete" component={RegisterComplete} />
+				<Route exact path="/forgot/password" component={ForgotPassword} />
+				<UserRoute exact path="/user/history" component={History} />
+				<UserRoute exact path="/user/password" component={Password} />
+				<UserRoute exact path="/user/wishlist" component={Wishlist} />
+				<AdminRoute exact path="/admin/dashboard" component={AdminDashboard} />
+				<AdminRoute exact path="/admin/category" component={CategoryCreate} />
+				<AdminRoute exact path="/admin/category/:slug" component={CategoryUpdate} />
+				<AdminRoute exact path="/admin/sub" component={SubCreate} />
+				<AdminRoute exact path="/admin/sub/:slug" component={SubUpdate} />
+				<AdminRoute exact path="/admin/product" component={ProductCreate} />
+				<AdminRoute exact path="/admin/products" component={AllProducts} />
+			</Switch>
+		</>
+	);
 };
 
 export default App;
