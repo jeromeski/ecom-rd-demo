@@ -26,6 +26,7 @@ const ProductUpdate = ({ match }) => {
   const [values, setValues] = useState(initialState);
   const [subOptions, setSubOptions] = useState([]);
 	const [categories, setCategories] = useState([]);
+  const [arrayOfSubs, setArrayOfSubs] = useState([]);
 
   // router
   const { slug } = match.params;
@@ -35,12 +36,24 @@ const ProductUpdate = ({ match }) => {
     loadCategories();
   }, []);
 
-  const loadProduct = () => {
-    getProduct(slug).then((p) => {
-      console.log("single product", p);
-      setValues({ ...values, ...p.data });
-    });
-  };
+   const loadProduct = () => {
+			getProduct(slug).then((p) => {
+				// console.log("single product", p);
+				// 1 load single proudct
+				setValues({ ...values, ...p.data });
+				// 2 load single product category subs
+				getCategorySubs(p.data.category._id).then((res) => {
+					setSubOptions(res.data); // on first load, show default subs
+				});
+				// 3 prepare array of sub ids to show as default sub values in antd Select
+				let arr = [];
+				p.data.subs.map((s) => {
+					arr.push(s._id);
+				});
+				console.log("ARR", arr);
+				setArrayOfSubs((prev) => arr); // required for ant design select to work
+			});
+		};
 
   const loadCategories = () =>
 		getCategories().then((c) => setCategories(c.data));
@@ -74,16 +87,16 @@ const ProductUpdate = ({ match }) => {
 
 				<div className="col-md-10">
 					<h4>Product update</h4>
-					{JSON.stringify(values)}
 					<ProductUpdateForm
 						handleSubmit={handleSubmit}
 						handleChange={handleChange}
-						values={values}
 						setValues={setValues}
+						values={values}
 						handleCategoryChange={handleCategoryChange}
-            categories={categories}
-            setCategories={setCategories}
-            subOptions={subOptions}
+						categories={categories}
+						subOptions={subOptions}
+						arrayOfSubs={arrayOfSubs}
+						setArrayOfSubs={setArrayOfSubs}
 					/>
 					<hr />
 				</div>
