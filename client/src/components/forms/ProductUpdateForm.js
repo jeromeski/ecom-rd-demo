@@ -130,9 +130,9 @@ const ProductUpdateForm = ({
 					onChange={(value) => setArrayOfSubs(value)}>
 					{subOptions.length &&
 						subOptions.map((s) => (
-							<Option key={s._id} value={s._id}>
+							<Select.Option key={s._id} value={s._id}>
 								{s.name}
-							</Option>
+							</Select.Option>
 						))}
 				</Select>
 			</div>

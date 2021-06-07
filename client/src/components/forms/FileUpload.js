@@ -85,19 +85,26 @@ const FileUpload = ({ values, setValues, setLoading }) => {
 	return (
 		<>
 			<div className="row">
-				{values.images &&
-					values.images.map((image) => (
-						<Badge
-							count="X"
-							key={image.public_id}
-							onClick={() => handleImageRemove(image.public_id)}
-							style={{ cursor: "pointer" }}>
-							<Avatar src={image.url} size={100} shape="square" className="ml-3" />
-						</Badge>
-					))}
-			</div>
+        {values.images &&
+          values.images.map((image) => (
+            <Badge
+              count="X"
+              key={image.public_id}
+              onClick={() => handleImageRemove(image.public_id)}
+              style={{ cursor: "pointer" }}
+            >
+              <Avatar
+                src={image.url}
+                size={100}
+                shape="square"
+                className="ml-3"
+              />
+            </Badge>
+          ))}
+      </div>
+      <br/>
 			<div className="row">
-				<label className="btn btn-primary">
+				<label className="btn btn-primary btn-raised mt-3">
 					Choose File
 					<input type="file" multiple hidden accept="images/*" onChange={fileUploadAndResize} />
 				</label>
