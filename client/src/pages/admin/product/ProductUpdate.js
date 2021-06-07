@@ -7,30 +7,32 @@ import { getCategories, getCategorySubs } from "../../../functions/category";
 import ProductUpdateForm from "../../../components/forms/ProductUpdateForm";
 
 const initialState = {
-  title: "",
-  description: "",
-  price: "",
-  categories: [],
-  category: "",
-  subs: [],
-  shipping: "",
-  quantity: "",
-  images: [],
-  colors: ["Black", "Brown", "Silver", "White", "Blue"],
-  brands: ["Apple", "Samsung", "Microsoft", "Lenovo", "ASUS"],
-  color: "",
-  brand: "",
+	title: "",
+	description: "",
+	price: "",
+	category: "",
+	subs: [],
+	shipping: "",
+	quantity: "",
+	images: [],
+	colors: ["Black", "Brown", "Silver", "White", "Blue"],
+	brands: ["Apple", "Samsung", "Microsoft", "Lenovo", "ASUS"],
+	color: "",
+	brand: ""
 };
 
 const ProductUpdate = ({ match }) => {
   // state
   const [values, setValues] = useState(initialState);
+  const [subOptions, setSubOptions] = useState([]);
+	const [categories, setCategories] = useState([]);
 
   // router
   const { slug } = match.params;
 
   useEffect(() => {
     loadProduct();
+    loadCategories();
   }, []);
 
   const loadProduct = () => {
@@ -39,6 +41,9 @@ const ProductUpdate = ({ match }) => {
       setValues({ ...values, ...p.data });
     });
   };
+
+  const loadCategories = () =>
+		getCategories().then((c) => setCategories(c.data));
 
   const handleSubmit = (e) => {
 		e.preventDefault();
@@ -49,6 +54,17 @@ const ProductUpdate = ({ match }) => {
 		setValues({ ...values, [e.target.name]: e.target.value });
 	};
 
+    const handleCategoryChange = (e) => {
+			e.preventDefault();
+			console.log("CATEGORY CLICKED", e.target.value);
+			setValues({ ...values, subs: [], category: e.target.value });
+			getCategorySubs(e.target.value).then((res) => {
+				console.log("SUB OPTIONS ON CATGORY CLICK", res);
+				setSubOptions(res.data);
+			});
+
+		};
+
   return (
 		<div className="container-fluid">
 			<div className="row">
@@ -58,12 +74,16 @@ const ProductUpdate = ({ match }) => {
 
 				<div className="col-md-10">
 					<h4>Product update</h4>
-					{/*JSON.stringify(values)*/}
+					{JSON.stringify(values)}
 					<ProductUpdateForm
 						handleSubmit={handleSubmit}
 						handleChange={handleChange}
 						values={values}
-            setValues={setValues}
+						setValues={setValues}
+						handleCategoryChange={handleCategoryChange}
+            categories={categories}
+            setCategories={setCategories}
+            subOptions={subOptions}
 					/>
 					<hr />
 				</div>

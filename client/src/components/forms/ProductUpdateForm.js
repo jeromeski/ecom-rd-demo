@@ -9,13 +9,12 @@ const ProductUpdateForm = ({
 	setValues,
 	handleCategoryChange,
 	subOptions,
-	showSub
+	categories
 }) => {
 	const {
 		title,
 		description,
 		price,
-		categories,
 		category,
 		subs,
 		shipping,
@@ -64,7 +63,11 @@ const ProductUpdateForm = ({
 
 			<div className="form-group">
 				<label>Shipping</label>
-				<select value={shipping === 'Yes' ? 'Yes': 'No' } name="shipping" className="form-control" onChange={handleChange}>
+				<select
+					value={shipping === "Yes" ? "Yes" : "No"}
+					name="shipping"
+					className="form-control"
+					onChange={handleChange}>
 					<option value="No">No</option>
 					<option value="Yes">Yes</option>
 				</select>
@@ -100,6 +103,23 @@ const ProductUpdateForm = ({
 							{b}
 						</option>
 					))}
+				</select>
+			</div>
+
+			<div className="form-group">
+				<label>Category</label>
+				<select
+					value={category ? category.name : "Please Select"}
+					name="category"
+					className="form-control"
+					onChange={handleCategoryChange}>
+					{categories.length > 0 &&
+						categories.map((c) => (
+							<option key={c._id} 
+              >
+								{c.name}
+							</option>
+						))}
 				</select>
 			</div>
 			<br />
