@@ -16,7 +16,7 @@ const initialState = {
 	quantity: "",
 	images: [],
 	colors: ["Black", "Brown", "Silver", "White", "Blue"],
-	brands: ["Apple", "Samsung", "Microsoft", "Lenovo", "ASUS"],
+	brands: ["Apple", "Samsung", "Microsoft", "Lenovo", "ASUS", "HP", "Toshiba"],
 	color: "",
 	brand: ""
 };
@@ -27,6 +27,7 @@ const ProductUpdate = ({ match }) => {
   const [subOptions, setSubOptions] = useState([]);
 	const [categories, setCategories] = useState([]);
   const [arrayOfSubs, setArrayOfSubs] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState("");
 
   // router
   const { slug } = match.params;
@@ -70,12 +71,18 @@ const ProductUpdate = ({ match }) => {
     const handleCategoryChange = (e) => {
 			e.preventDefault();
 			console.log("CATEGORY CLICKED", e.target.value);
-			setValues({ ...values, subs: [], category: e.target.value });
+			setValues({ ...values, subs: [] });
+      setSelectedCategory(e.target.value);
 			getCategorySubs(e.target.value).then((res) => {
 				console.log("SUB OPTIONS ON CATGORY CLICK", res);
 				setSubOptions(res.data);
 			});
-
+      if (values.category._id === e.target.value) {
+				loadProduct();
+			} else {
+        setArrayOfSubs([]);
+      }
+			
 		};
 
   return (
@@ -97,6 +104,7 @@ const ProductUpdate = ({ match }) => {
 						subOptions={subOptions}
 						arrayOfSubs={arrayOfSubs}
 						setArrayOfSubs={setArrayOfSubs}
+						selectedCategory={selectedCategory}
 					/>
 					<hr />
 				</div>
