@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { getProduct } from "../functions/product";
 import SingleProduct from "../components/cards/SingleProduct";
 
+
 const Product = ({ match }) => {
 	const [product, setProduct] = useState({});
 
