@@ -15,6 +15,7 @@ const Product = ({ match }) => {
     loadSingleProduct();
   }, [slug]);
 
+  // Show users current star rating before update
   useEffect(() => {
     if (product.ratings && user) {
       let existingRatingObject = product.ratings.find(
